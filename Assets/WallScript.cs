@@ -20,7 +20,7 @@ public class WallScript : MonoBehaviour {
     void MoveLeft()
     {
         var pos = transform.position;
-        transform.position = new Vector3(pos.x - 0.01f, pos.y, pos.z);
+        transform.position = new Vector3(pos.x - 0.05f, pos.y, pos.z);
     }
     
     IEnumerator FadeOutIn(long millis)
