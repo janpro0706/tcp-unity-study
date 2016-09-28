@@ -3,9 +3,16 @@ using System.Collections;
 
 public class GenWall : MonoBehaviour {
     public Transform wall;
+    public Camera cam;
 
-	// Use this for initialization
-	void Start () {
+    float camWidth, camHeight;
+
+    // Use this for initialization
+    void Start () {
+        cam = Camera.main;
+        camHeight = cam.orthographicSize * 2;
+        camWidth = camHeight * cam.aspect;
+
         Instantiate(wall, new Vector3(8.5f, 0, 0), Quaternion.identity);
         StartCoroutine(GenerateInterval(5));
 	}
@@ -25,7 +32,7 @@ public class GenWall : MonoBehaviour {
             else
             {
                 // Generate Wall from prefab
-                Instantiate(wall, new Vector3(8.5f, 0, 0), Quaternion.identity);
+                Instantiate(wall, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
 
                 count += sec;
                 yield return true;

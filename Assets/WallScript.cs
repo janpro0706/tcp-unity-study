@@ -3,9 +3,16 @@ using System.Collections;
 
 public class WallScript : MonoBehaviour {
     private IEnumerator fadeOut;
+    public Camera cam;
+
+    float camWidth, camHeight;
 
     // Use this for initialization
     void Start () {
+        cam = Camera.main;
+        camHeight = cam.orthographicSize * 2;
+        camWidth = camHeight * cam.aspect;
+
         fadeOut = FadeOutIn(5000);
     }
 
@@ -20,7 +27,7 @@ public class WallScript : MonoBehaviour {
     void MoveLeft()
     {
         var pos = transform.position;
-        transform.position = new Vector3(pos.x - (17 / 5.0f * Time.deltaTime), pos.y, pos.z);
+        transform.position = new Vector3(pos.x - ((camWidth + 1) / 5.0f * Time.deltaTime), pos.y, pos.z);
     }
     
     IEnumerator FadeOutIn(long millis)
