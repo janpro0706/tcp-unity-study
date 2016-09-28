@@ -15,7 +15,10 @@ public class GenWall : MonoBehaviour {
 
         //float[] p = RandomGenPosition();
         //GenerateWall(p[0], p[1]);
-        GenerateWall(Random.Range(-10.0f, 10.0f));
+        float[] pos = RandomGenYPositions(3);
+        GenerateWall(pos[0]);
+        GenerateWall(pos[1]);
+
         StartCoroutine(GenerateInterval(5));
 	}
 	
@@ -36,7 +39,9 @@ public class GenWall : MonoBehaviour {
                 // Generate Wall from prefab
                 //float[] p = RandomGenPosition();
                 //GenerateWall(p[0], p[1]);
-                GenerateWall(Random.Range(-10.0f, 10.0f));
+                float[] pos = RandomGenYPositions(3);
+                GenerateWall(pos[0]);
+                GenerateWall(pos[1]);
 
                 count += sec;
                 yield return true;
@@ -59,14 +64,40 @@ public class GenWall : MonoBehaviour {
         Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
     }
 
+    // 하나의 벽의 top bottom을 받아와 스케일 하려고 했는데.. 잘 안됬음
+    // b: bottom of wall, t: top of wall
     float[] RandomGenPosition()
     {
         float b = 0, t = 0;
 
         while (Mathf.Abs(t - b) < 3)
         {
-            b = Random.Range(-5.0f, 5.0f);
+            b = Random.Range(-5.0f, 5.0f);  // (-5.0f, 5.0f) coord of bottom and top of camera
             t = Random.Range(-5.0f, 5.0f);
+        }
+
+        if (b > t)
+        {
+            float temp = b;
+            b = t;
+            t = temp;
+        }
+
+        float[] pos = { b, t };
+
+        return pos;
+    }
+
+    // get random y coord of two walls with space
+    // b: bottom wall, t: top wall
+    float[] RandomGenYPositions(float space)
+    {
+        float b = 0, t = 0;
+
+        while (Mathf.Abs(t - b) < 10 + space)
+        {
+            b = Random.Range(-10.0f, 10.0f);    // camera height + wall padding
+            t = Random.Range(-10.0f, 10.0f);
         }
 
         if (b > t)
