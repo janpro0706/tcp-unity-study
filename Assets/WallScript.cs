@@ -20,7 +20,7 @@ public class WallScript : MonoBehaviour {
     void MoveLeft()
     {
         var pos = transform.position;
-        transform.position = new Vector3(pos.x - 0.05f, pos.y, pos.z);
+        transform.position = new Vector3(pos.x - (17 / 5.0f * Time.deltaTime), pos.y, pos.z);
     }
     
     IEnumerator FadeOutIn(long millis)
@@ -29,7 +29,9 @@ public class WallScript : MonoBehaviour {
 
         while ((countdown -= Time.deltaTime) > 0) yield return false;
 
-        gameObject.SetActive(false);
+        //    gameObject.SetActive(false); 이부분 아마 프리팹을 비활성화 시켜서 5초 뒤 Instantiate가 안 먹는듯
+        GetComponent<Renderer>().enabled = false;   // 사용되지 않는 오브젝트를 지우지 않으므로 나중에 바꾸자
+
         yield return true;
     }
 }
