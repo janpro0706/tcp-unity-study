@@ -5,7 +5,8 @@ public class GenWall : MonoBehaviour {
     public Transform wall;
     public Camera cam;
 
-    float camWidth, camHeight;
+    private float camWidth, camHeight;
+    private int timeQuantum;
 
     // Use this for initialization
     void Start () {
@@ -13,11 +14,13 @@ public class GenWall : MonoBehaviour {
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
 
+        timeQuantum = 1;
         //float[] p = RandomGenPosition();
         //GenerateWall(p[0], p[1]);
         float[] pos = RandomGenYPositions(3);
-        GenerateWall(pos[0]);
-        GenerateWall(pos[1]);
+        GenerateWall(pos[0], timeQuantum);
+        GenerateWall(pos[1], timeQuantum);
+        timeQuantum++;
 
         StartCoroutine(GenerateInterval(5));
 	}
@@ -40,8 +43,9 @@ public class GenWall : MonoBehaviour {
                 //float[] p = RandomGenPosition();
                 //GenerateWall(p[0], p[1]);
                 float[] pos = RandomGenYPositions(3);
-                GenerateWall(pos[0]);
-                GenerateWall(pos[1]);
+                GenerateWall(pos[0], timeQuantum);
+                GenerateWall(pos[1], timeQuantum);
+                timeQuantum++;
 
                 count += sec;
                 yield return true;
@@ -59,7 +63,7 @@ public class GenWall : MonoBehaviour {
         Object instance = Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
     }
 
-    void GenerateWall(float y)
+    void GenerateWall(float y, int timeQuantum)
     {
         Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
     }
