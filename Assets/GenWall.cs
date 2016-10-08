@@ -65,7 +65,9 @@ public class GenWall : MonoBehaviour {
 
     void GenerateWall(float y, int timeQuantum)
     {
-        Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
+        Object w = Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
+        
+        ((Transform)w).GetComponent<WallScript>().SetTimeQuantum(timeQuantum);
     }
 
     // 하나의 벽의 top bottom을 받아와 스케일 하려고 했는데.. 잘 안됬음
