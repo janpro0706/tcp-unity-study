@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
 
     private Player()
     {
-        Debug.Log("constructor detected");
+
     }
 
     public void Init(float x, float y)
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour {
     {
         score += add;
         Debug.Log(score);
+
         return score;
     }
 

@@ -16,15 +16,11 @@ public class WallScript : MonoBehaviour {
         camWidth = camHeight * cam.aspect;
 
         fadeOut = false;
-        fadeOutIn = FadeOutIn(5000);
+        StartCoroutine(FadeOutIn(5000));
     }
 
     // Update is called once per frame
     void Update () {
-        if (fadeOutIn.MoveNext() != false)
-        {
-            MoveLeft();
-        }
     }
 
 
@@ -48,10 +44,14 @@ public class WallScript : MonoBehaviour {
     {
         float countdown = millis / 1000.0f;
 
-        while ((countdown -= Time.deltaTime) > 0) yield return false;
+        while ((countdown -= Time.deltaTime) > 0)
+        {
+            MoveLeft();
+
+            yield return false;
+        }
 
         // fade out wall object
-        //    gameObject.SetActive(false); 이부분 아마 프리팹을 비활성화 시켜서 5초 뒤 Instantiate가 안 먹는듯
         GetComponent<Renderer>().enabled = false;   // 사용되지 않는 오브젝트를 지우지 않으므로 나중에 바꾸자
 
         // increase player score
