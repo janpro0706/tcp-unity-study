@@ -5,25 +5,23 @@ public class WallTranslator : MonoBehaviour {
     private IEnumerator fadeOutIn;
     public Camera cam;
     private float camWidth, camHeight;
+    private Player player;
 
     // Use this for initialization
     void Start () {
         cam = Camera.main;
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
-        
-        StartCoroutine(FadeOutIn(5000));
-    }
 
-    // Update is called once per frame
-    void Update () {
+        player = Player.GetInstance();
+        
+        StartCoroutine(FadeOutIn((long)((camWidth + 1) / player.GetSpeedX() * 1000)));
     }
 
     private void MoveLeft()
     {
         var pos = transform.position;
-        //transform.position = new Vector3(pos.x - ((camWidth + 1) / 5.0f * Time.deltaTime), pos.y, pos.z);   // speed is 18 / 5 (벽이 5초 동안 카메라를 완전히 벗어나는 속도)
-        transform.Translate(Vector3.left * ((camWidth + 1) / 5.0f * Time.deltaTime));
+        transform.Translate(Vector3.left * (player.GetSpeedX() * Time.deltaTime));       // speed is 18 / 5 (벽이 5초 동안 카메라를 완전히 벗어나는 속도)
     }
     
     private IEnumerator FadeOutIn(long millis)

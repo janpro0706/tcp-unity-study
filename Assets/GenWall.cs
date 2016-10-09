@@ -13,7 +13,7 @@ public class GenWall : MonoBehaviour {
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
         
-        StartCoroutine(GenerateInterval(5));
+        StartCoroutine(GenerateInterval(2));
 	}
 	
 	void Update () {
