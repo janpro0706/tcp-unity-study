@@ -1,37 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WallScript : MonoBehaviour {
+public class WallTranslator : MonoBehaviour {
     private IEnumerator fadeOutIn;
     public Camera cam;
-
-    private int timeQuantum;                // 시간 순서대로 생성된 벽을 1부터 매김. 동시간에 생성된 벽은 같은 값
     private float camWidth, camHeight;
-    private bool fadeOut;
 
     // Use this for initialization
     void Start () {
         cam = Camera.main;
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
-
-        fadeOut = false;
+        
         StartCoroutine(FadeOutIn(5000));
     }
 
     // Update is called once per frame
     void Update () {
-    }
-
-
-    public void SetTimeQuantum(int timeQuantum)
-    {
-        this.timeQuantum = timeQuantum;
-    }
-
-    public int GetTimeQuantum()
-    {
-        return timeQuantum;
     }
 
     private void MoveLeft()
@@ -52,20 +37,9 @@ public class WallScript : MonoBehaviour {
             yield return false;
         }
 
-        // increase player score
-        Player p = Player.GetInstance();
-        p.WallPassed(timeQuantum);
-
-        fadeOut = true;
-
         // fade out wall object
         Destroy(gameObject);
 
         yield return true;
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("collision detected: " + other.name);
     }
 }

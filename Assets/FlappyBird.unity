@@ -268,6 +268,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wall: {fileID: 4000011915601872, guid: a0c55c6684ee5ce48ba9286746d0e702, type: 2}
+  passDetector: {fileID: 1000011577756592, guid: cc821f34d148dc044b131b5774d396ee,
+    type: 2}
   cam: {fileID: 0}
 --- !u!4 &1950429674
 Transform:

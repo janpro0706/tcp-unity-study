@@ -3,19 +3,16 @@ using System.Collections;
 
 public class GenWall : MonoBehaviour {
     public Transform wall;
+    public GameObject passDetector;
     public Camera cam;
-
     private float camWidth, camHeight;
-    private int timeQuantum;
     
 
     void Start () {
         cam = Camera.main;
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
-
-        timeQuantum = 1;
-
+        
         StartCoroutine(GenerateInterval(5));
 	}
 	
@@ -34,9 +31,9 @@ public class GenWall : MonoBehaviour {
             {
                 // Generate Wall from prefab
                 float[] pos = RandomGenYPositions(3);
-                GenerateWall(pos[0], timeQuantum);
-                GenerateWall(pos[1], timeQuantum);
-                timeQuantum++;
+                GenerateWall(pos[0]);
+                GenerateWall(pos[1]);
+                GenerateDetector();
 
                 count += sec;
                 yield return true;
@@ -44,11 +41,14 @@ public class GenWall : MonoBehaviour {
         }
     }
 
-    void GenerateWall(float y, int timeQuantum)
+    void GenerateWall(float y)
     {
         Object w = Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
-        
-        ((Transform)w).GetComponent<WallScript>().SetTimeQuantum(timeQuantum);
+    }
+
+    void GenerateDetector()
+    {
+        Object p = Instantiate(passDetector, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
     }
 
     // get random y coord of two walls with space
