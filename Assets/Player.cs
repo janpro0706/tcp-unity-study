@@ -3,13 +3,16 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
     private static Player instance;
+
+    private IEnumerator sineEaser;
     public Camera cam;
     private float camWidth, camHeight;
-
-    private int[] wallCount = new int[10];  // 구조가 많이 이상합니다만...
-    private int score;
+    
+    private int score = 0;
     private float speedX;
     private float speedY;
+    public const float X_POS = -6;
+    public const float Y_POS = 0;
 
     private Player()
     {
@@ -28,7 +31,18 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        Init(-6, 0);
+        cam = Camera.main;
+        camHeight = cam.orthographicSize * 2;
+        camWidth = camHeight * cam.aspect;
+
+        float minSpeed = (camWidth + 1) / 5.0f;
+        float maxSpeed = (camWidth + 1) / 1.0f;
+
+        speedX = minSpeed;
+        speedY = 0;
+        transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
+
+        sineEaser = Assets.EasingFunction.Sine(minSpeed, maxSpeed, 60 * 1000);
 
         StartCoroutine(Falling());
         StartCoroutine(Flap());
@@ -37,10 +51,10 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        // Increase Player(Wall) speed
-        if ((camWidth + 1) / speedX > 0.5f)
+        // Increase Player(Wall) speed easing in Sine
+        if (sineEaser.MoveNext() != false)
         {
-            speedX += 0.01f;
+            speedX = (float)sineEaser.Current;
         }
     }
 
@@ -65,18 +79,6 @@ public class Player : MonoBehaviour {
             }
             yield return false;
         }
-    }
-
-    public void Init(float x, float y)
-    {
-        cam = Camera.main;
-        camHeight = cam.orthographicSize * 2;
-        camWidth = camHeight * cam.aspect;
-
-        score = 0;
-        speedX = (camWidth + 1) / 5.0f;
-        speedY = 0f;
-        transform.position = new Vector3(x, y, transform.position.z);
     }
 
     public int IncScore(int add)
