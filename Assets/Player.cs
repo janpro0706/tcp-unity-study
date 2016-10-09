@@ -9,14 +9,13 @@ public class Player : MonoBehaviour {
     private float camWidth, camHeight;
     
     private int score = 0;
+    private Rigidbody2D rigid;
     private float speedX;
-    private float speedY;
     public const float X_POS = -6;
     public const float Y_POS = 0;
 
     private Player()
     {
-
     }
 
     public static Player GetInstance()
@@ -35,16 +34,16 @@ public class Player : MonoBehaviour {
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
 
+        rigid = gameObject.GetComponent<Rigidbody2D>();
+
         float minSpeed = (camWidth + 1) / 5.0f;
         float maxSpeed = (camWidth + 1) / 1.0f;
 
         speedX = minSpeed;
-        speedY = 0;
         transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
 
         sineEaser = Assets.EasingFunction.Sine(minSpeed, maxSpeed, 60 * 1000);
-
-        StartCoroutine(Falling());
+        
         StartCoroutine(Flap());
     }
 
@@ -58,24 +57,13 @@ public class Player : MonoBehaviour {
         }
     }
 
-    IEnumerator Falling()
-    {
-        float G = -3f;
-        while (true)
-        {
-            speedY += (G * Time.deltaTime);
-            transform.Translate(Vector3.up * speedY * Time.deltaTime);
-            yield return false;
-        }
-    }
-
     IEnumerator Flap()
     {
         while (true)
         {
             if (Input.anyKey)
             {
-                speedY = 3;
+                rigid.velocity = new Vector2(rigid.velocity.x, 4);
             }
             yield return false;
         }
