@@ -37,7 +37,8 @@ public class WallScript : MonoBehaviour {
     private void MoveLeft()
     {
         var pos = transform.position;
-        transform.position = new Vector3(pos.x - ((camWidth + 1) / 5.0f * Time.deltaTime), pos.y, pos.z);   // speed is 18 / 5 (벽이 5초 동안 카메라를 완전히 벗어나는 속도)
+        //transform.position = new Vector3(pos.x - ((camWidth + 1) / 5.0f * Time.deltaTime), pos.y, pos.z);   // speed is 18 / 5 (벽이 5초 동안 카메라를 완전히 벗어나는 속도)
+        transform.Translate(Vector3.left * ((camWidth + 1) / 5.0f * Time.deltaTime));
     }
     
     private IEnumerator FadeOutIn(long millis)
@@ -51,15 +52,20 @@ public class WallScript : MonoBehaviour {
             yield return false;
         }
 
-        // fade out wall object
-        GetComponent<Renderer>().enabled = false;   // 사용되지 않는 오브젝트를 지우지 않으므로 나중에 바꾸자
-
         // increase player score
         Player p = Player.GetInstance();
         p.WallPassed(timeQuantum);
 
         fadeOut = true;
 
+        // fade out wall object
+        Destroy(gameObject);
+
         yield return true;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("collision detected: " + other.name);
     }
 }
