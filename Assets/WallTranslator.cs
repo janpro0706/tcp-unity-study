@@ -31,13 +31,16 @@ public class WallTranslator : MonoBehaviour {
     
     private IEnumerator TranslateWall()
     {
-        while (transform.position.x > -(camWidth / 2 + 1))
+        while (true)
         {
             MoveLeft();
+            if (transform.position.x < -(camWidth / 2 + 1))
+            {
+                Init(camWidth / 2 + 1, transform.position.y);
+            }
+
             yield return false;
         }
-
-        Init(camWidth / 2 + 1, transform.position.y);
 
         yield return true;
     }

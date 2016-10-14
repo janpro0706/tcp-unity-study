@@ -2,11 +2,13 @@
 using System.Collections;
 
 public class GenWall : MonoBehaviour {
-    public Transform wall;
-    public GameObject passDetector;
+    public Transform wallPrefab;
+    public GameObject passDetectorPrefab;
     public Camera cam;
     private float camWidth, camHeight;
-    
+
+    private Queue wallQueue = new Queue();
+    private const int WALL_NUM = 3;
 
     void Start () {
         cam = Camera.main;
@@ -31,9 +33,17 @@ public class GenWall : MonoBehaviour {
             {
                 // Generate Wall from prefab
                 float[] pos = RandomGenYPositions(3);
-                GenerateWall(pos[0]);
-                GenerateWall(pos[1]);
-                GenerateDetector();
+
+                WallFamily fam;
+                if (wallQueue.Count < WALL_NUM)
+                {
+                    fam = new WallFamily();
+                    fam.upWall = GenerateWall(pos[0]);
+                    fam.downWall = GenerateWall(pos[1]);
+                    fam.passDetector = GenerateDetector();
+
+                    wallQueue.Enqueue(fam);
+                }
 
                 count += sec;
                 yield return true;
@@ -41,14 +51,16 @@ public class GenWall : MonoBehaviour {
         }
     }
 
-    void GenerateWall(float y)
+    Object GenerateWall(float y)
     {
-        Object w = Instantiate(wall, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
+        Object wall = Instantiate(wallPrefab, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
+        return wall;
     }
 
-    void GenerateDetector()
+    Object GenerateDetector()
     {
-        Object p = Instantiate(passDetector, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
+        Object passDetector = Instantiate(passDetectorPrefab, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
+        return passDetector;
     }
 
     // get random y coord of two walls with space
