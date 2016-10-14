@@ -15,7 +15,7 @@ public class WallTranslator : MonoBehaviour {
 
         player = Player.GetInstance();
         
-        StartCoroutine(FadeOutIn((long)((camWidth + 1) / player.GetSpeedX() * 1000)));
+        StartCoroutine(TranslateWall());
     }
 
     private void MoveLeft()
@@ -23,20 +23,21 @@ public class WallTranslator : MonoBehaviour {
         var pos = transform.position;
         transform.Translate(Vector3.left * (player.GetSpeedX() * Time.deltaTime));       // speed is 18 / 5 (벽이 5초 동안 카메라를 완전히 벗어나는 속도)
     }
-    
-    private IEnumerator FadeOutIn(long millis)
-    {
-        float countdown = millis / 1000.0f;
 
-        while ((countdown -= Time.deltaTime) > 0)
+    private void Init(float x, float y)
+    {
+        transform.position = new Vector3(x, y, 0);
+    }
+    
+    private IEnumerator TranslateWall()
+    {
+        while (transform.position.x > -(camWidth / 2 + 1))
         {
             MoveLeft();
-
             yield return false;
         }
 
-        // fade out wall object
-        Destroy(gameObject);
+        Init(camWidth / 2 + 1, transform.position.y);
 
         yield return true;
     }
