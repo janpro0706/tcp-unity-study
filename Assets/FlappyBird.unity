@@ -250,7 +250,7 @@ GameObject:
   - 4: {fileID: 1950429674}
   - 114: {fileID: 1950429673}
   m_Layer: 0
-  m_Name: GenWall
+  m_Name: WallSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -267,8 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e4870c699c9994bb3650b66d22591c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 4000011915601872, guid: a0c55c6684ee5ce48ba9286746d0e702, type: 2}
-  passDetector: {fileID: 1000011577756592, guid: cc821f34d148dc044b131b5774d396ee,
+  wallPrefab: {fileID: 4000011915601872, guid: a0c55c6684ee5ce48ba9286746d0e702, type: 2}
+  passDetectorPrefab: {fileID: 1000011577756592, guid: cc821f34d148dc044b131b5774d396ee,
     type: 2}
   cam: {fileID: 0}
 --- !u!4 &1950429674

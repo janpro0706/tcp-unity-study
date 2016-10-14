@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GenWall : MonoBehaviour {
+public class WallSpawner : MonoBehaviour {
     public Transform wallPrefab;
     public GameObject passDetectorPrefab;
     public Camera cam;
@@ -15,13 +15,13 @@ public class GenWall : MonoBehaviour {
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
         
-        StartCoroutine(GenerateInterval(2));
+        StartCoroutine(SpawnInterval(2));
 	}
 	
 	void Update () {
 	}
 
-    IEnumerator GenerateInterval(int sec)
+    IEnumerator SpawnInterval(int sec)
     {
         float count = 0;
 
@@ -38,9 +38,9 @@ public class GenWall : MonoBehaviour {
                 if (wallQueue.Count < WALL_NUM)
                 {
                     fam = new WallFamily();
-                    fam.upWall = GenerateWall(pos[0]);
-                    fam.downWall = GenerateWall(pos[1]);
-                    fam.passDetector = GenerateDetector();
+                    fam.upWall = SpawnWall(pos[0]);
+                    fam.downWall = SpawnWall(pos[1]);
+                    fam.passDetector = SpawnDetector();
 
                     wallQueue.Enqueue(fam);
                 }
@@ -51,13 +51,13 @@ public class GenWall : MonoBehaviour {
         }
     }
 
-    Object GenerateWall(float y)
+    Object SpawnWall(float y)
     {
         Object wall = Instantiate(wallPrefab, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
         return wall;
     }
 
-    Object GenerateDetector()
+    Object SpawnDetector()
     {
         Object passDetector = Instantiate(passDetectorPrefab, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
         return passDetector;
