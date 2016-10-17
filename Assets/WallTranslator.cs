@@ -7,15 +7,26 @@ public class WallTranslator : MonoBehaviour {
     private float camWidth, camHeight;
     private Player player;
 
-    // Use this for initialization
-    void Start () {
+    private IEnumerator translator;
+    
+    void Awake () {
         cam = Camera.main;
         camHeight = cam.orthographicSize * 2;
         camWidth = camHeight * cam.aspect;
 
         player = Player.GetInstance();
-        
-        StartCoroutine(TranslateWall());
+
+        translator = TranslateWall();
+    }
+
+    void OnEnable()
+    {
+        StartCoroutine(translator);
+    }
+
+    void OnDisable()
+    {
+        StopCoroutine(translator);
     }
 
     private void MoveLeft()
@@ -37,6 +48,7 @@ public class WallTranslator : MonoBehaviour {
             if (transform.position.x < -(camWidth / 2 + 1))
             {
                 Init(camWidth / 2 + 1, transform.position.y);
+                gameObject.SetActive(false);
             }
 
             yield return false;

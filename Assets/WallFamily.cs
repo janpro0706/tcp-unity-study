@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class WallFamily {
-    public Object upWall;
-    public Object downWall;
-    public Object passDetector;
+    public GameObject upWall;
+    public GameObject downWall;
+    public GameObject passDetector;
 }

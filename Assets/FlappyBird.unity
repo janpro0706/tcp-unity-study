@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59e4870c699c9994bb3650b66d22591c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallPrefab: {fileID: 4000011915601872, guid: a0c55c6684ee5ce48ba9286746d0e702, type: 2}
+  wallPrefab: {fileID: 1000013166686734, guid: a0c55c6684ee5ce48ba9286746d0e702, type: 2}
   passDetectorPrefab: {fileID: 1000011577756592, guid: cc821f34d148dc044b131b5774d396ee,
     type: 2}
   cam: {fileID: 0}
