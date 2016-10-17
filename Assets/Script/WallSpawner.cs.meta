@@ -1,14 +1,13 @@
 fileFormatVersion: 2
 guid: 59e4870c699c9994bb3650b66d22591c
-timeCreated: 1476435383
+timeCreated: 1476697269
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - wallPrefab: {fileID: 1000013166686734, guid: a0c55c6684ee5ce48ba9286746d0e702,
+  - wallPrefab: {fileID: 1000010094957648, guid: a658fe319a78a544ab45a84e357d2677,
       type: 2}
-  - passDetectorPrefab: {fileID: 1000011577756592, guid: cc821f34d148dc044b131b5774d396ee,
-      type: 2}
+  - passDetectorPrefab: {instanceID: 0}
   - cam: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}

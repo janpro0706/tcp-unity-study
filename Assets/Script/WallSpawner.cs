@@ -26,12 +26,9 @@ public class WallSpawner : MonoBehaviour {
         {
             float[] pos = RandomGenYPositions(3);
 
-            WallFamily fam = new WallFamily();
-            fam.upWall = SpawnWall(pos[0]);
-            fam.downWall = SpawnWall(pos[1]);
-            fam.passDetector = SpawnDetector();
+            GameObject wall = SpawnWall(pos[0], pos[1]);
 
-            wallQueue.Enqueue(fam);
+            wallQueue.Enqueue(wall);
         }
     }
 
@@ -48,12 +45,10 @@ public class WallSpawner : MonoBehaviour {
                 // Generate Wall from prefab
                 float[] pos = RandomGenYPositions(3);
 
-                WallFamily fam = (WallFamily)wallQueue.Dequeue();
-                fam.upWall.SetActive(true);
-                fam.downWall.SetActive(true);
-                fam.passDetector.SetActive(true);
+                GameObject wall = (GameObject)wallQueue.Dequeue();
+                wall.SetActive(true);
 
-                wallQueue.Enqueue(fam);
+                wallQueue.Enqueue(wall);
 
                 count += sec;
                 yield return true;
@@ -61,18 +56,19 @@ public class WallSpawner : MonoBehaviour {
         }
     }
 
-    GameObject SpawnWall(float y)
+    GameObject SpawnWall(float y1, float y2)
     {
-        GameObject wall = (GameObject)Instantiate(wallPrefab, new Vector3(camWidth / 2, y, 0), Quaternion.identity);
-        wall.SetActive(false);
-        return wall;
-    }
+        GameObject wall = (GameObject)Instantiate(wallPrefab, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
 
-    GameObject SpawnDetector()
-    {
-        GameObject passDetector = (GameObject)Instantiate(passDetectorPrefab, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
-        passDetector.SetActive(false);
-        return passDetector;
+        Transform up = wall.transform.Find("UpWall");
+        Transform down = wall.transform.Find("DownWall");
+        Vector3 upPos = up.position;
+        Vector3 downPos = down.position;
+
+        up.position = new Vector3(upPos.x, y1, upPos.z);
+        down.position = new Vector3(downPos.x, y2, downPos.z);
+
+        return wall;
     }
 
     // get random y coord of two walls with space
