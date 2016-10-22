@@ -8,11 +8,11 @@ public class Player : MonoBehaviour {
     public Camera cam;
     private float camWidth, camHeight;
     
-    private int score = 0;
     private Rigidbody2D rigid;
     private float speedX;
     public const float X_POS = -6;
     public const float Y_POS = 0;
+    public bool isAlive;
 
     private Player()
     {
@@ -36,15 +36,7 @@ public class Player : MonoBehaviour {
 
         rigid = gameObject.GetComponent<Rigidbody2D>();
 
-        float minSpeed = (camWidth + 1) / 5.0f;
-        float maxSpeed = (camWidth + 1) / 1.0f;
-
-        speedX = minSpeed;
-        transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
-
-        sineEaser = Assets.EasingFunction.Sine(minSpeed, maxSpeed, 60 * 1000);
-        
-        StartCoroutine(Flap());
+        Init();
     }
 
     // Update is called once per frame
@@ -55,6 +47,24 @@ public class Player : MonoBehaviour {
         {
             speedX = (float)sineEaser.Current;
         }
+    }
+
+    void Init()
+    {
+        StopCoroutine("Flap");
+
+        float minSpeed = (camWidth + 1) / 5.0f;
+        float maxSpeed = (camWidth + 1) / 1.0f;
+
+        isAlive = true;
+
+        speedX = minSpeed;
+        transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
+        rigid.velocity = new Vector2(rigid.velocity.x, 0);
+
+        sineEaser = Assets.EasingFunction.Sine(minSpeed, maxSpeed, 60 * 1000);
+
+        StartCoroutine(Flap());
     }
 
     IEnumerator Flap()
@@ -69,21 +79,20 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public int IncScore(int add)
-    {
-        score += add;
-        Debug.Log(score);
-
-        return score;
-    }
-
-    public int GetScore()
-    {
-        return score;
-    }
-
     public float GetSpeedX()
     {
         return speedX;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("bird collided");
+
+        isAlive = false;
+    }
+
+    public bool IsAlive()
+    {
+        return isAlive;
     }
 }
