@@ -3,30 +3,23 @@ using System.Collections;
 
 public class WallTranslator : MonoBehaviour {
     private IEnumerator fadeOutIn;
-    public Camera cam;
-    private float camWidth, camHeight;
+    ScreenManager screenManager;
     private Player player;
 
-    private IEnumerator translator;
     
     void Awake () {
-        cam = Camera.main;
-        camHeight = cam.orthographicSize * 2;
-        camWidth = camHeight * cam.aspect;
-
+        screenManager = ScreenManager.GetInstance();
         player = Player.GetInstance();
-
-        translator = TranslateWall();
     }
 
     void OnEnable()
     {
-        StartCoroutine(translator);
+        StartCoroutine("TranslateWall");
     }
 
     void OnDisable()
     {
-        StopCoroutine(translator);
+        StopCoroutine("TranslateWall");
     }
 
     private void MoveLeft()
@@ -42,6 +35,8 @@ public class WallTranslator : MonoBehaviour {
     
     private IEnumerator TranslateWall()
     {
+        float camWidth = screenManager.GetCamWidth();
+
         while (true)
         {
             MoveLeft();

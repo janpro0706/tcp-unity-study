@@ -327,6 +327,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1325253367}
   - 114: {fileID: 1325253366}
+  - 114: {fileID: 1325253368}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -359,6 +360,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!114 &1325253368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1325253365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 479e749d75a174d41b2d99ca58179af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
 --- !u!1 &1648052639
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +508,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 1000010094957648, guid: a658fe319a78a544ab45a84e357d2677, type: 2}
   passDetectorPrefab: {fileID: 0}
-  cam: {fileID: 0}
 --- !u!4 &1950429674
 Transform:
   m_ObjectHideFlags: 0
@@ -552,7 +564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a85b886f61e7040b412fcee7209997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
   isAlive: 0
 --- !u!212 &2125803876
 SpriteRenderer:

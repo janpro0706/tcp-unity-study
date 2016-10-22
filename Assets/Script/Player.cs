@@ -3,10 +3,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
     private static Player instance;
-
+    ScreenManager screenManager;
     private IEnumerator sineEaser;
-    public Camera cam;
-    private float camWidth, camHeight;
     
     private Rigidbody2D rigid;
     private float speedX;
@@ -14,9 +12,6 @@ public class Player : MonoBehaviour {
     public const float Y_POS = 0;
     public bool isAlive;
 
-    private Player()
-    {
-    }
 
     public static Player GetInstance()
     {
@@ -27,44 +22,30 @@ public class Player : MonoBehaviour {
         return instance;
     }
 
+    void Awake()
+    {
+        screenManager = ScreenManager.GetInstance();
+        rigid = gameObject.GetComponent<Rigidbody2D>();
+    }
+
     // Use this for initialization
     void Start()
     {
-        cam = Camera.main;
-        camHeight = cam.orthographicSize * 2;
-        camWidth = camHeight * cam.aspect;
-
-        rigid = gameObject.GetComponent<Rigidbody2D>();
-
         Init();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // Increase Player(Wall) speed easing in Sine
-        if (sineEaser.MoveNext() != false)
-        {
-            speedX = (float)sineEaser.Current;
-        }
     }
 
     void Init()
     {
         StopCoroutine("Flap");
-
-        float minSpeed = (camWidth + 1) / 5.0f;
-        float maxSpeed = (camWidth + 1) / 1.0f;
-
+        StopCoroutine("SpeedUp");
+        
         isAlive = true;
-
-        speedX = minSpeed;
+        
         transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
         rigid.velocity = new Vector2(rigid.velocity.x, 0);
 
-        sineEaser = Assets.EasingFunction.Sine(minSpeed, maxSpeed, 60 * 1000);
-
-        StartCoroutine(Flap());
+        StartCoroutine("Flap");
+        StartCoroutine("SpeedUp");
     }
 
     IEnumerator Flap()
@@ -76,6 +57,24 @@ public class Player : MonoBehaviour {
                 rigid.velocity = new Vector2(rigid.velocity.x, 4);
             }
             yield return false;
+        }
+    }
+
+    IEnumerator SpeedUp()
+    {
+        float camWidth = screenManager.GetCamWidth();
+
+        float minSpeed = (camWidth + 1) / 5.0f;
+        float maxSpeed = (camWidth + 1) / 1.0f;
+
+        speedX = minSpeed;
+
+        sineEaser = Assets.EasingFunction.Sine(minSpeed, maxSpeed, 60 * 1000);
+        // Increase Player(Wall) speed easing in Sine
+        while (sineEaser.MoveNext())
+        {
+            speedX = (float)sineEaser.Current;
+            yield return true;
         }
     }
 

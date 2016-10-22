@@ -4,18 +4,17 @@ using System.Collections;
 public class WallSpawner : MonoBehaviour {
     public GameObject wallPrefab;
     public GameObject passDetectorPrefab;
-    public Camera cam;
-    private float camWidth, camHeight;
+    ScreenManager screenManager;
 
     private Queue wallQueue = new Queue();
     private const int WALL_NUM = 3;
 
+    void Awake()
+    {
+        screenManager = ScreenManager.GetInstance();
+    }
+
     void Start () {
-        cam = Camera.main;
-        camHeight = cam.orthographicSize * 2;
-        camWidth = camHeight * cam.aspect;
-
-
         InstantiateWalls();
         StartCoroutine(SpawnInterval(2));
 	}
@@ -58,6 +57,8 @@ public class WallSpawner : MonoBehaviour {
 
     GameObject SpawnWall(float y1, float y2)
     {
+        float camWidth = screenManager.GetCamWidth();
+
         GameObject wall = (GameObject)Instantiate(wallPrefab, new Vector3(camWidth / 2, 0, 0), Quaternion.identity);
 
         Transform up = wall.transform.Find("UpWall");
