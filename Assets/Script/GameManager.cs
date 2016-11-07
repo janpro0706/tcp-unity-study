@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour {
 
         restartBtn.onClick.AddListener(Restart);
 
-        InitGame();
+        Invoke("InitGame", 0.0f);
     }
 
     void InitGame()
@@ -49,9 +49,20 @@ public class GameManager : MonoBehaviour {
     public void GameOver()
     {
         wallSpawner.gameObject.SetActive(false);
-
         gameOverView.SetActive(true);
-        gameOverView.GetComponentInChildren<Text>().text = "Final Score: " + score;
+
+        var rankManager = Assets.RankFileManager.GetInstance();
+        int maxScore = rankManager.GetMaxScore();
+
+        var textUIs = gameOverView.GetComponentsInChildren<Text>();
+
+        textUIs[0].text = "Max Score: " + maxScore;
+        textUIs[1].text = "Final Score: " + score;
+
+        if (score > maxScore)
+        {
+            rankManager.SetScore(score);
+        }
     }
 
     public void Restart()

@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
         //StopCoroutine("SpeedUp");
         
         isAlive = true;
-        
+
         transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
         rigid.velocity = new Vector2(rigid.velocity.x, 0);
         rigid.gravityScale = 1;
@@ -88,11 +88,11 @@ public class Player : MonoBehaviour {
 
     void Die()
     {
-        GameManager.GetInstance().GameOver();
         isAlive = false;
-
         rigid.gravityScale = 0;
         rigid.velocity = new Vector3(0, 0, 0);
+
+        GameManager.GetInstance().GameOver();
     }
 
     public bool IsAlive()
