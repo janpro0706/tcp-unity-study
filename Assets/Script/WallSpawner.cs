@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class WallSpawner : MonoBehaviour {
+    public static WallSpawner instance;
+
     public GameObject wallPrefab;
     public GameObject passDetectorPrefab;
     ScreenManager screenManager;
@@ -9,15 +11,27 @@ public class WallSpawner : MonoBehaviour {
     private Queue wallQueue = new Queue();
     private const int WALL_NUM = 3;
 
+    public static WallSpawner GetInstance()
+    {
+        if (instance == null)
+        {
+            instance = FindObjectOfType<WallSpawner>();
+        }
+        return instance;
+    }
+
     void Awake()
     {
         screenManager = ScreenManager.GetInstance();
+
+        InstantiateWalls();
     }
 
-    void Start () {
-        InstantiateWalls();
+    public void Init()
+    {
+        ResetWalls();
         StartCoroutine(SpawnInterval(2));
-	}
+    }
 
     void InstantiateWalls()
     {
@@ -31,9 +45,9 @@ public class WallSpawner : MonoBehaviour {
         }
     }
 
-    IEnumerator SpawnInterval(int sec)
+    public IEnumerator SpawnInterval(int sec)
     {
-        float count = 0;
+        float count = 0.5f;
 
         while (true)
         {
@@ -45,6 +59,7 @@ public class WallSpawner : MonoBehaviour {
                 float[] pos = RandomGenYPositions(3);
 
                 GameObject wall = (GameObject)wallQueue.Dequeue();
+                wall.transform.position = new Vector3(screenManager.GetCamWidth() / 2, 0, 0);
                 wall.SetActive(true);
 
                 wallQueue.Enqueue(wall);
@@ -93,5 +108,19 @@ public class WallSpawner : MonoBehaviour {
         float[] pos = { b, t };
 
         return pos;
+    }
+
+    public void ResetWalls()
+    {
+        GameObject wall;
+
+        for (int i = 0; i < WALL_NUM; i++)
+        {
+            wall = (GameObject)wallQueue.Dequeue();
+
+            wall.transform.position = new Vector3(screenManager.GetCamWidth() / 2, 0, 0);
+            wall.SetActive(false);
+            wallQueue.Enqueue(wall);
+        }
     }
 }

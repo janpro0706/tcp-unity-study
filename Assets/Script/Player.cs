@@ -24,25 +24,22 @@ public class Player : MonoBehaviour {
 
     void Awake()
     {
-        screenManager = ScreenManager.GetInstance();
-        rigid = gameObject.GetComponent<Rigidbody2D>();
-    }
-
-    // Use this for initialization
-    void Start()
-    {
         Init();
     }
 
-    void Init()
+    public void Init()
     {
-        StopCoroutine("Flap");
-        StopCoroutine("SpeedUp");
+        screenManager = ScreenManager.GetInstance();
+        rigid = gameObject.GetComponent<Rigidbody2D>();
+
+        //StopCoroutine("Flap");
+        //StopCoroutine("SpeedUp");
         
         isAlive = true;
         
         transform.position = new Vector3(X_POS, Y_POS, transform.position.z);
         rigid.velocity = new Vector2(rigid.velocity.x, 0);
+        rigid.gravityScale = 1;
 
         StartCoroutine("Flap");
         StartCoroutine("SpeedUp");
@@ -52,7 +49,7 @@ public class Player : MonoBehaviour {
     {
         while (true)
         {
-            if (Input.anyKey)
+            if (Input.anyKey && isAlive)
             {
                 rigid.velocity = new Vector2(rigid.velocity.x, 4);
             }
@@ -86,8 +83,16 @@ public class Player : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("bird collided");
+        Die();
+    }
 
+    void Die()
+    {
+        GameManager.GetInstance().GameOver();
         isAlive = false;
+
+        rigid.gravityScale = 0;
+        rigid.velocity = new Vector3(0, 0, 0);
     }
 
     public bool IsAlive()
